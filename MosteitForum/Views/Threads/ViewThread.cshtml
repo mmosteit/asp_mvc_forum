@@ -1,0 +1,105 @@
+﻿@{
+    Layout = "~/Views/Shared/MosteitLayout.cshtml";
+}
+
+@model MosteitForum.Models.Post
+
+@helper recur(MosteitForum.Models.Post post)
+{
+
+    @* -- We are not the root post -- *@
+    if (post.PostText != null)
+    {
+
+        @Html.Raw("<li name='" + post.PostID + "' class='post' id='" + post.PostID + "'>\n")
+        @Html.Raw("<div class='post_div'>\n")
+        @Html.Raw("<p><strong>" + post.Username + "</strong> on " + post.DatePosted + "</p>\n")
+
+        @Html.Raw("<p class='post_text'>\n")
+        if (post.Deleted == false)
+        {
+            @Html.Raw(post.PostText)
+            @Html.Raw("<a class='delete_post' href='/Posts/Delete?post_id=" + post.PostID +"'>Delete</a>")
+
+        }
+        else
+        {
+            @Html.Raw(" <span>This post has been deleted by the moderator.</span>\n")
+        }
+        @Html.Raw("</p>\n")
+    
+    
+        if (post.Children.Count == 0)
+        {
+            @Html.Raw("<button type='button' class='reply_new_branch'>Reply to this post</button>\n");
+        }
+        @Html.Raw("</div> <!-- class='post_div' -->\n")
+        @Html.Raw("</li><!-- name='post.post_id' class='post' id='post.post_id -->\n")
+
+    }
+    
+    @* Display this post's children *@
+    if (post.Children.Count != 0)
+    {
+        @* In this case, the id is being used to identify the parent id for the child posts *@
+        @Html.Raw("<ul id='" + post.PostID + "'>\n")
+        @Html.Raw("<!--"+post.Children.Count+" -->")
+        foreach (var child in post.Children)
+        {
+            @recur(child);
+        }
+        @Html.Raw("</ul>\n")
+    }
+
+    @* Add a reply button to continue the current conversation *@
+    if (post.PostText != null)
+    {
+
+        @* We are the last child of the current conversation *@
+        if (post.parent.Children.Last() == post)
+        {
+            @Html.Raw("<li>\n")
+            @Html.Raw("<button type='button' class='reply_current_branch'>Continue conversation</button>\n")
+            @Html.Raw("</li>\n")
+        }
+    }
+}
+
+<div>
+   
+    <div id='wrapper' thread_id='@ViewBag.thread_id'>
+        <a href="/Threads/Index">Back to index</a>
+        <h2 class='thread_title'>@ViewBag.title</h2>
+
+        @recur(@Model)
+    </div>
+</div>
+
+<script>
+// Add a new post to the existing branch
+$('.reply_current_branch, .reply_new_branch').click(
+        function(){
+        var id           = $(this).parent().parent().attr('id');
+        var textarea     = $("<textarea name='post_text' id='post_text"+id+"'rows='7' cols='100'></textarea>");
+        var username_div = $("<div class='username_div' </div>");
+        var username     = $("<label for='username"+id+"'>Username</label><input type='text' class='text_input'  name='username' id='username"+id+"' >");
+        var button       = $("<input type='submit' class='post_button'  id='reply_button"+id+"' value='post'>");
+        var parent_id    = $("<input type='hidden' name='parent_id' value ='"+id+"'>");
+        var thread_id    = $("<input type='hidden' name='thread_id' value ='"+$("#wrapper").attr('thread_id')+"'>");
+        var url          = $("<input type='hidden' name='url' value='"+document.location.href+"'>");
+        // Hide the reply button
+        $(this).hide();
+        // Create a form with the textarea and button
+        form = $("<form method='post' action='/Posts/NewPost' accept-charset='utf-8'> ");
+        $(form).append(textarea);
+        $(username_div).append(username);
+        $(username_div).append(button);
+        $(form).append(username_div);
+        // Create the hidden elements used in the post data
+        $(form).append(parent_id);
+        $(form).append(thread_id);
+        $(form).append(url);
+        $(this).parent().append(form);
+        }
+);
+</script>

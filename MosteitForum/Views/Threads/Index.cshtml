@@ -1,0 +1,66 @@
+﻿@model IEnumerable<MosteitForum.Models.Thread>
+
+@{
+    Layout = "~/Views/Shared/MosteitLayout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<!-- Header for creating new threads -->
+<div id="wrapper">
+    <h1>Mosteit Forums</h1>
+    <form id="thread_form" method="post" action="/Threads/Create/">
+        <label for="title">Subject Title</label>
+        <input type="text" class="text_input" name="title" id="title" maxlength="60" />
+        <label for"username">Username</label>
+        <input type="text" class="text_input" name="username" id="username" maxlength="60" />
+        <input type="submit" id="create_thread" value="Create Thread" />
+        @Html.AntiForgeryToken()
+    </form>
+    <div id="post_div">
+
+        <ul>
+            @{
+                foreach (var thread in Model)
+                {
+           
+                @Html.Raw("<li class='post'>")
+                    @Html.Raw("<a style='float:left;margin:.5em;' href='/Threads/ViewThread?id="+thread.ThreadID+"'>"+thread.ThreadTitle+"</a>")
+                    @Html.Raw("<p style='float:left;margin:.5em;'>"+thread.UserName+": "+thread.DatePosted+"</p>")
+                    @Html.Raw("<form action='/Threads/Delete' method='POST'>")
+                        @Html.Raw("<input style='float:left;margin:.5em' class='delete' type='submit' value='Delete'>")
+                        @Html.Raw("<input type='hidden' name='thread_id' value='"+thread.ThreadID+"'>")
+                    @Html.Raw("</form>")
+                @Html.Raw("</li>")
+                }
+            }
+        </ul>
+
+
+    </div>@*end #post_div*@
+</div>@* end #wrapper *@
+
+<script>
+// Create a new text area
+var post_text = $("<br><textarea name='post_text' id='post_text' rows='7' cols='100'>Post text goes here</textarea>");
+// Add the text area to the form.
+$('#thread_form').append(post_text);
+// Hide the newly created text area
+$('#post_text').hide();
+    // When the user focuses on either title or author, show the text area
+    $('#title, #username').focus(
+        function(){
+            $('#post_text').show('slow');
+        }
+    );
+    // When the user leaves the text area, hide it if it is empty
+    $('#post_text').blur(
+        function(){
+
+            var text = $('#post_text').val();
+            if (text.trim() === ''){
+                $('#post_text').hide('slow');
+            }
+        }
+    );
+</script>
