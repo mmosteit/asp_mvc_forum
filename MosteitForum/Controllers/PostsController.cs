@@ -25,6 +25,10 @@ namespace MosteitForum.Controllers
         public ActionResult NewPost(string username, string post_text, int parent_id, int thread_id)
         {
 
+            if(post_text.Trim() == "" || username.Trim() == "" )
+            {
+                return RedirectToAction("NewPostError", "Posts", new { thread_id  });
+            }
             
             DateTime new_date_posted = DateTime.Now;
 
@@ -48,6 +52,14 @@ namespace MosteitForum.Controllers
 
             // Otherwise, redirect to the same thread
             return RedirectToAction("ViewThread","Threads", new  {id = thread_id });
+        }
+
+        public ActionResult NewPostError(int thread_id)
+        {
+            String title = db.Threads.First(x => x.ThreadID == thread_id).ThreadTitle;
+            ViewBag.title = title;
+            ViewBag.ThreadId = thread_id;
+            return View();
         }
 
         // GET: Posts/Details/5

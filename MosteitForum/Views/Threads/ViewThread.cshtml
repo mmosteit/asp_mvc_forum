@@ -80,7 +80,7 @@
 $('.reply_current_branch, .reply_new_branch').click(
         function(){
         var id           = $(this).parent().parent().attr('id');
-        var textarea     = $("<textarea name='post_text' id='post_text"+id+"'rows='7' cols='100'></textarea>");
+        var textarea     = $("<textarea name='post_text' id='post_text"+id+"'rows='7' cols='100'>Post text...</textarea>");
         var username_div = $("<div class='username_div' </div>");
         var username     = $("<label for='username"+id+"'>Username</label><input type='text' class='text_input'  name='username' id='username"+id+"' >");
         var button       = $("<input type='submit' class='post_button'  id='reply_button"+id+"' value='post'>");

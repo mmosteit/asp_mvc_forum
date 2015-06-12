@@ -47,6 +47,13 @@ namespace MosteitForum.Controllers
 
         }
 
+        public ActionResult NewThreadError()
+        {
+            ViewBag.title = "Thread Creation Error";
+
+            return View();
+        }
+
         public ActionResult ViewThread(int? id)
         {
 
@@ -75,8 +82,6 @@ namespace MosteitForum.Controllers
         }
 
 
-
-
         // POST: Threads/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -84,9 +89,9 @@ namespace MosteitForum.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(string title, string UserName, string post_text)
         {
-            if (title == null || title == "" || UserName == null || UserName == "" || post_text == null || post_text == "")
+            if (title == null || title.Trim() == "" || UserName == null || UserName.Trim() == "" || post_text == null || post_text.Trim() == "")
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "One or more of the required POST parameters is null");
+                return RedirectToAction("NewThreadError");
             }
 
             // Add the first thread

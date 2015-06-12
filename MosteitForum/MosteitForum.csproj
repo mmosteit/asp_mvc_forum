@@ -163,10 +163,11 @@
     <Content Include="Views\Shared\MosteitLayout.cshtml" />
     <Content Include="Views\Threads\Index.cshtml" />
     <Content Include="Views\Posts\Create.cshtml" />
-    <Content Include="Views\Posts\Delete.cshtml" />
     <Content Include="Views\Threads\ViewThread.cshtml" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Posts\NewPostError.cshtml" />
+    <Content Include="Views\Threads\NewThreadError.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
