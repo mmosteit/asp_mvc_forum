@@ -1,9 +1,12 @@
 ﻿<!DOCTYPE html>
-@* This page is not actually used. Visual studio complains if I delete it. The actual Layout file is MosteitLayout.cshtml*@
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+
+    <link href="@Url.Content("~/Content/style.css")" rel="stylesheet" type="text/css" />
+    @Scripts.Render("~/Scripts/jquery-2.1.4.min.js")
+    <title>@ViewBag.title</title>
 </head>
 <body>
     <div>

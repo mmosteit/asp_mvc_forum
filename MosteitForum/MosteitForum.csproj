@@ -160,9 +160,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\MosteitLayout.cshtml" />
     <Content Include="Views\Threads\Index.cshtml" />
-    <Content Include="Views\Posts\Create.cshtml" />
     <Content Include="Views\Threads\ViewThread.cshtml" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Views\Shared\_Layout.cshtml" />
